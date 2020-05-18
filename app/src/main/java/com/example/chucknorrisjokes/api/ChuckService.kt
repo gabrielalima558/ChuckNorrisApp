@@ -3,7 +3,6 @@ package com.example.chucknorrisjokes.api
 import com.example.chucknorrisjokes.model.Joke
 import io.reactivex.Observable
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ChuckService {

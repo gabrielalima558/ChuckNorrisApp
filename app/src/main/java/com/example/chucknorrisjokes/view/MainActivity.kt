@@ -1,6 +1,5 @@
 package com.example.chucknorrisjokes.view
 
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,7 +13,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: ChuckListAdapter
-    val list = ArrayList<Joke>()
 
     private val viewModel: ChuckViewModel by lazy {
         ViewModelProvider(this, ViewModelFactory).get(ChuckViewModel::class.java)
@@ -31,11 +29,12 @@ class MainActivity : AppCompatActivity() {
         setAdapterJokes()
 
     }
+
     private fun getJokesByCategory() {
         viewModel.getOther()
     }
 
-    private fun setAdapterJokes(){
+    private fun setAdapterJokes() {
         viewModel.joke().observe(this, Observer { joke ->
             adapter.joke = teste(joke)
 
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun teste(joke: Joke): ArrayList<Joke>{
+    private fun teste(joke: Joke): ArrayList<Joke> {
         val list = ArrayList<Joke>()
         list.add(joke)
 

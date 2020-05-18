@@ -21,9 +21,9 @@ class ChuckApi(retrofit: Retrofit) {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
-                    response.forEach {
-                        list.add(it)
-                    }
+                response.forEach {
+                    list.add(it)
+                }
             }, { error ->
                 Log.e("TESTEERROR", error.message.toString())
 
