@@ -1,33 +1,52 @@
 package com.example.chucknorrisjokes.view
 
-import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.chucknorrisjokes.viewmodel.ChuckViewModel
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chucknorrisjokes.R
+import com.example.chucknorrisjokes.model.Joke
+import com.example.chucknorrisjokes.viewmodel.ChuckViewModel
 import com.example.chucknorrisjokes.viewmodel.ViewModelFactory
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var adapter: ChuckListAdapter
+    val list = ArrayList<Joke>()
+
     private val viewModel: ChuckViewModel by lazy {
         ViewModelProvider(this, ViewModelFactory).get(ChuckViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         setContentView(R.layout.activity_main)
+        adapter = ChuckListAdapter()
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        viewModel.listCategories()
-        viewModel.list().observe(this, Observer {
-            //imita o adapter do picpay
-            it.forEach { category ->
-                viewModel.getJoke(category)
-                viewModel.joke().observe(this, Observer {
-                    Log.e("TESTE",it.value)
-                })
+        getJokesByCategory()
+        setAdapterJokes()
 
-            }
+    }
+    private fun getJokesByCategory() {
+        viewModel.getOther()
+    }
+
+    private fun setAdapterJokes(){
+        viewModel.joke().observe(this, Observer { joke ->
+            adapter.joke = teste(joke)
+
         })
+
+    }
+
+    private fun teste(joke: Joke): ArrayList<Joke>{
+        val list = ArrayList<Joke>()
+        list.add(joke)
+
+        return list
     }
 }

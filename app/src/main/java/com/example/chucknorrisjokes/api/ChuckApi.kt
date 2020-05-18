@@ -12,53 +12,43 @@ class ChuckApi(retrofit: Retrofit) {
     private val service: ChuckService by lazy {
         retrofit.create(ChuckService::class.java)
     }
+    val list = ArrayList<String>()
 
-    fun categoriesListCall(lidaComSucesso: (List<String>) -> Unit) {
-//        if(UtilMethods.isConnectedToInternet(mContext)){
-//            UtilMethods.showLoading(mContext)
+    fun callListCategories(lidaComSucesso: (Joke) -> Unit) {
         val observable = service.getCategories()
         observable
             .flatMap { results -> Observable.fromArray(results) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
-//                    UtilMethods.hideLoading()
-                response?.let(lidaComSucesso)
-                /** loginResponse is response data class*/
-
+                    response.forEach {
+                        list.add(it)
+                    }
             }, { error ->
                 Log.e("TESTEERROR", error.message.toString())
-//                    UtilMethods.hideLoading()
-//                    UtilMethods.showLongToast(mContext, error.message.toString())
+
+            }, {
+                list.forEach {
+                    callJoke(it, lidaComSucesso)
+                }
             }
             )
-//        }else{
-//            UtilMethods.showLongToast(mContext, "No Internet Connection!")
-//        }
     }
 
-    fun jokesCall(category: String, lidaComSucesso: (Joke) -> Unit) {
-//        if(UtilMethods.isConnectedToInternet(mContext)){
-//            UtilMethods.showLoading(mContext)
+    fun callJoke(category: String, lidaComSucesso: (Joke) -> Unit) {
+
         val observable = service.getJokesByCategories(category)
         observable
             .flatMap { results -> Observable.fromArray(results) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
-//                    UtilMethods.hideLoading()
                 response?.let(lidaComSucesso)
-                /** loginResponse is response data class*/
 
             }, { error ->
                 Log.e("TESTEERROR", error.message.toString())
-//                    UtilMethods.hideLoading()
-//                    UtilMethods.showLongToast(mContext, error.message.toString())
             }
             )
-//        }else{
-//            UtilMethods.showLongToast(mContext, "No Internet Connection!")
-//        }
     }
 
 }
