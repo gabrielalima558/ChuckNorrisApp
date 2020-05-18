@@ -36,16 +36,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun setAdapterJokes() {
         viewModel.joke().observe(this, Observer { joke ->
-            adapter.joke = teste(joke)
+            adapter.joke = treatJoke(joke)
 
         })
 
     }
 
-    private fun teste(joke: Joke): ArrayList<Joke> {
+    private fun treatJoke(joke: Joke): ArrayList<Joke> {
         val list = ArrayList<Joke>()
         list.add(joke)
-
         return list
     }
 }
